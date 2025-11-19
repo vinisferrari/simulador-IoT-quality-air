@@ -1,0 +1,279 @@
+[
+    {
+        "id": "82f028bef1eab08e",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "tab_main",
+        "type": "tab",
+        "label": "Monitor IoT",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true
+    },
+    {
+        "id": "ui_tab_main",
+        "type": "ui_tab",
+        "name": "IoT Dashboard",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "ui_group_monitor",
+        "type": "ui_group",
+        "name": "Monitoramento",
+        "tab": "ui_tab_main",
+        "order": 1,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "gauge_temp",
+        "type": "ui_gauge",
+        "z": "82f028bef1eab08e",
+        "d": true,
+        "name": "Temperatura",
+        "group": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperatura (°C)",
+        "label": "°C",
+        "format": "{{payload.temperatura}}",
+        "min": 0,
+        "max": 60,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 650,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_sensores",
+        "type": "mqtt in",
+        "z": "tab_main",
+        "name": "Receber sensores do ESP32",
+        "topic": "vinicius/monitorar/ar",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "function_led_logic",
+                "a57e93c387efb2e6"
+            ]
+        ]
+    },
+    {
+        "id": "function_led_logic",
+        "type": "function",
+        "z": "tab_main",
+        "name": "Condição do LED",
+        "func": "let temperatura = msg.payload.temperatura;\nlet umidade = msg.payload.umidade;\nlet gases = msg.payload.gases;\n\nif (gases > 60 || umidade < 30) {\n    msg.payload = \"ON\";\n} else {\n    msg.payload = \"OFF\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 200,
+        "wires": [
+            [
+                "mqtt_out_led",
+                "ui_status_led"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_led",
+        "type": "mqtt out",
+        "z": "tab_main",
+        "name": "Enviar comando para LED",
+        "topic": "vinicius/monitorar/led",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 700,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_led",
+        "type": "mqtt in",
+        "z": "tab_main",
+        "name": "Receber estado do LED",
+        "topic": "vinicius/monitorar/led",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "ui_status_led"
+            ]
+        ]
+    },
+    {
+        "id": "ui_status_led",
+        "type": "ui_text",
+        "z": "tab_main",
+        "group": "ui_group_monitor",
+        "order": 4,
+        "width": "",
+        "height": "",
+        "name": "Status do LED",
+        "label": "LED:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 690,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "gauge_umid",
+        "type": "ui_gauge",
+        "z": "tab_main",
+        "name": "Umidade",
+        "group": "ui_group_monitor",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Umidade (%)",
+        "label": "%",
+        "format": "{{payload.umidade}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 680,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "gauge_gas",
+        "type": "ui_gauge",
+        "z": "tab_main",
+        "name": "Gases",
+        "group": "ui_group_monitor",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Nível de Gases (%)",
+        "label": "%",
+        "format": "{{payload.gases}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 670,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "a57e93c387efb2e6",
+        "type": "function",
+        "z": "tab_main",
+        "name": "function convert",
+        "func": "msg.temperatura = Number(msg.payload.temperatura);\nmsg.umidade = Number(msg.payload.umidade);\nmsg.gases = Number(msg.payload.gases);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 100,
+        "wires": [
+            [
+                "gauge_temp",
+                "gauge_gas",
+                "gauge_umid"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_temp",
+        "type": "ui_gauge",
+        "z": "tab_main",
+        "name": "Temperatura",
+        "group": "ui_group_monitor",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperatura (°C)",
+        "label": "°C",
+        "format": "{{payload.temperatura}}",
+        "min": 0,
+        "max": 60,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "99765d8d0ffbfce6",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
