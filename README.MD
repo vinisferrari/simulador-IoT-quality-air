@@ -102,7 +102,7 @@ Simulação executável no navegador:
 
 ## 📊 Resultados
 
-As imagens da simulaçãoee dashboard estão disponíveis em:  
+As imagens da simulaçãoe e dashboard estão disponíveis em:  
 📁 `/docs/resultados/`
 
 ---
@@ -113,22 +113,24 @@ Demonstração completa no YouTube (não listado):
 🔗 https://www.youtube.com/SEU_VIDEO_AQUI
 
 ---
-## 📃 Repositório
+## 💻 Repositório
 
 Todo o código-fonte está disponível em:  
-🔗 https://www.youtube.com/SEU_VIDEO_AQUI
+🔗 https://github.com/vinisferrari/simulador-IoT-quality-air
 
 ---
 
 ## 📌 Como Reproduzir
 
 1. Clone o repositório  
-2. Importe o fluxo no Node-RED  
-3. Compile o firmware no ESP32  
-4. Configure o Wi-Fi no código  
-5. Abra o dashboard em:  
+2. Inicie a aplica Node-RED
+3. Importe o fluxo no Node-RED  
+4. Compile o firmware no ESP32  
+5. Configure o Wi-Fi no código  
+6. Configure o Broker MQTT (Caso deseje executar em outro servidor ou em um canal privado)
+6. Abra o dashboard em:  
    `http://localhost:1880/ui`  
-6. Pronto: você verá a leitura dos sensores e o acionamento automático do LED.
+7. Pronto: você verá a leitura dos sensores e o acionamento automático do LED.
 
 ---
 
