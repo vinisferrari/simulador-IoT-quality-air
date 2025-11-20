@@ -110,7 +110,7 @@ As imagens da simulaçãoe e dashboard estão disponíveis em:
 ## 🎥 Vídeo Demonstrativo
 
 Demonstração completa no YouTube (não listado):  
-🔗 https://www.youtube.com/SEU_VIDEO_AQUI
+🔗 https://www.youtube.com/watch?v=8dV-mocKSG8
 
 ---
 ## 💻 Repositório
